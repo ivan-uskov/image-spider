@@ -1,0 +1,16 @@
+{
+    "name": "ivan-uskov/image-spider",
+    "description": "PHP library for searching images in Google",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivan Uskov",
+            "email": "ivan.uskov@ispringsolutions.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "ext-curl": "*"
+    }
+}
