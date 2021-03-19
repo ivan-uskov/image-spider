@@ -12,5 +12,6 @@
     "require": {
         "php": "^7.1",
         "ext-curl": "*"
-    }
+    },
+    "minimum-stability": "dev"
 }
