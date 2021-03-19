@@ -13,5 +13,10 @@
         "php": "^7.1",
         "ext-curl": "*"
     },
+    "autoload": {
+        "psr-4": {
+            "IvanUskov\\ImageSpider\\": "src/"
+        }
+    },
     "minimum-stability": "dev"
 }
