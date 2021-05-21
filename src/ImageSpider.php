@@ -4,7 +4,8 @@ namespace IvanUskov\ImageSpider;
 
 class ImageSpider
 {
-    private const URL_PATTERN = 'https://www.google.com/search?q=%QUERY%&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjm8YX6mL7hAhWswqYKHVMvBkkQ_AUIDigB&biw=1440&bih=766';
+    private const SMALL_IMAGE_URL_PATTERN = '/gstatic\.com/';
+    private const URL_PATTERN = 'https://www.google.com/search?q=%QUERY%&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiPw-K9qdrwAhU0CRAIHUh0D4UQ_AUoAXoECAEQAw&biw=1920&bih=976';
     private const ENCODING = 'gzip, deflate';
     private const HEADERS = [
         'Authority: www.google.com',
@@ -27,8 +28,18 @@ class ImageSpider
 
     private static function parseImageUrls(string $body): array
     {
-        preg_match_all('/<img class="rg_i Q4LuWd" data-src="([^"]*)"/', $body, $matches);
-        return $matches[1] ?? [];
+        preg_match_all('/\["([^"]+)",\d+,\d+\]/', $body, $matches);
+        $images = array_filter($matches[1] ?? [], function(string $imageUrl) {
+            return !preg_match(self::SMALL_IMAGE_URL_PATTERN, $imageUrl);
+        });
+
+        return array_map(function($str) { return  self::decodeUnicodeSequence($str); }, $images);
+    }
+
+    private static function decodeUnicodeSequence(string $str): string
+    {
+        $data = json_decode('["' . $str . '"]');
+        return array_pop($data);
     }
 
     private static function loadImages(string $url): string
